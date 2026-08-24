@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rider App Simulator</title>
+    <!-- Socket.io client library -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+
+    <h2>Delivery Rider Simulator</h2>
+    <p>Click the button to send a live GPS coordinate to your Node.js server.</p>
+    
+    <button onclick="sendFakeLocation()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+        Send Live Location
+    </button>
+
+    <script>
+        // Connect to local Node.js server
+        const socket = io('http://localhost:5000');
+
+        socket.on('connect', () => {
+            console.log('Connected to server with ID:', socket.id);
+        });
+
+        function sendFakeLocation() {
+            // Generating dummy coordinates
+            const data = {
+                lat: 21.1702 + (Math.random() * 0.01),
+                lng: 72.8311 + (Math.random() * 0.01)
+            };
+            
+            // Sending payload to server
+            socket.emit('updateLocation', data);
+            alert(`Location sent! Lat: ${data.lat.toFixed(4)}, Lng: ${data.lng.toFixed(4)}`);
+        }
+    </script>
+</body>
+</html>
